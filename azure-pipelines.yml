@@ -18,7 +18,14 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
+      if ! command -v jq >/dev/null 2>&1 ; then
+        sudo apt-get update
         sudo apt-get install jq -y
+      else
+        echo "jq is already installed."
+      fi
+  displayName: 'Install jq if not already installed'
+  
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   steps:
