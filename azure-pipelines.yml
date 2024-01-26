@@ -16,13 +16,7 @@ jobs:
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
         jsonResponse=$(curl -s $apiUrl)
         echo "JSON Response: $jsonResponse"
-
-  - task: CopyFiles@2
-    displayName: 'Copy response.json to Staging Directory'
-    inputs:
-      SourceFolder: '$(System.DefaultWorkingDirectory)'
-      Contents: '**/response.json'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact'
