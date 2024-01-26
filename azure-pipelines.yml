@@ -17,30 +17,17 @@ jobs:
         # storing response in variable
         jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
         echo "JSON Response: $jsonResponse"
-        
-        # Debug information
-        echo "Current Directory: $(System.DefaultWorkingDirectory)"
-        echo "Contents of Directory: $(ls -a)"
-        echo "Contents of Staging Directory: $(ls -a $(Build.ArtifactStagingDirectory))"
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   steps:
   - task: CopyFiles@2
-    displayName: 'Copy Python Script and Response File'
+    displayName: 'Copy Python Script'
     inputs:
       SourceFolder: '$(System.DefaultWorkingDirectory)'
-      Contents: |
-        manipulate_json.py
-        response.json
+      Contents: 'manipulate_json.py'
       TargetFolder: $(Build.ArtifactStagingDirectory)
-
-  - task: Bash@3
-    displayName: 'List Contents of Staging Directory'
-    inputs:
-      targetType: 'inline'
-      script: 'ls $(Build.ArtifactStagingDirectory)'
 
   - task: Bash@3
     displayName: 'Print Content of response.json'
