@@ -35,6 +35,13 @@ jobs:
       artifact: 'responseArtifacts'
       path: $(Build.ArtifactStagingDirectory)
 
+  - task: CopyFiles@2
+    displayName: 'Copy Python Script to Staging Directory'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: 'manipulate_json.py'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
   - task: Bash@3
     displayName: 'List Contents of Staging Directory'
     inputs:
