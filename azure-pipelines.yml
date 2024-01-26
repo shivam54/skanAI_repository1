@@ -26,25 +26,7 @@ jobs:
   dependsOn: CallingGetApi
   steps:
   - task: Bash@3
-    displayName: 'Manipulate Response with Python'
+    displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
-      script: |
-        # Execute Python script directly
-        /usr/bin/python3 -c "import json
-import datetime
-
-# Read JSON from file
-with open('response.json', 'r') as file:
-    data = json.load(file)
-
-# Manipulate data
-timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-data['title'] = f'Updated Title - {timestamp} shivamData'
-
-# Save manipulated data back to file
-with open('manipulatedResponse.json', 'w') as file:
-    json.dump(data, file, indent=2)
-
-# Print manipulated data
-print(f'Manipulated JSON Response: {json.dumps(data, indent=2)}')"
+      script: '/usr/bin/python3 manipulate_json.py'
