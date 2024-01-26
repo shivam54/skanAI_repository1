@@ -1,3 +1,10 @@
+Your Azure Pipelines YAML appears well-structured, and it includes the necessary steps for installing `jq` before using it in the subsequent job for manipulating the JSON response. The usage of the `command -v jq` check ensures that `jq` is only installed if it's not already present.
+
+A small adjustment for better readability and to ensure the success of the pipeline would be to add `set -e` at the beginning of the script to make the script exit immediately if any command returns a non-zero status.
+
+Here's the updated YAML:
+
+```yaml
 trigger:
 - main
 
@@ -18,12 +25,13 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-      if ! command -v jq >/dev/null 2>&1 ; then
-        sudo apt-get update
-        sudo apt-get install jq -y
-      else
-        echo "jq is already installed."
-      fi
+        set -e  
+        if ! command -v jq >/dev/null 2>&1 ; then
+          sudo apt-get update
+          sudo apt-get install jq -y
+        else
+          echo "jq is already installed."
+        fi
   displayName: 'Install jq if not already installed'
   
 - job: CallingGetApi
@@ -52,3 +60,6 @@ jobs:
         manipulatedResponse=$(echo $jsonResponse | jq --arg timestamp "$timestamp" '.title = "Updated Title - $timestamp shivamData"')
         
         echo "Manipulated JSON Response: $manipulatedResponse"
+```
+
+The `set -e` command ensures that if any command fails, the script will exit immediately, preventing potential issues from being overlooked. If everything looks good with your specific requirements, you can use this YAML configuration for your Azure Pipelines.
