@@ -16,8 +16,9 @@ jobs:
         # Calling the "GET" Operation 
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
         # storing response in variable
-       # jsonResponse=$(curl -s $apiUrl)
-        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
+       jsonResponse="$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)"
+       echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
+
 
         echo "JSON Response: $jsonResponse"
         # Save response to a file for Python script to read
