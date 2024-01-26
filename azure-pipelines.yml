@@ -45,3 +45,5 @@ jobs:
 
         # Print manipulated data
         print(f"Manipulated JSON Response: {json.dumps(data, indent=2)}")
+    env:
+      PYTHONPATH: '/usr/bin/python3'
