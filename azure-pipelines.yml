@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'macOS-latest'
+  name: Default
 
 steps:
 - task: Bash@3
