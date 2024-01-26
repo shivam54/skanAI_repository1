@@ -1,12 +1,21 @@
 import json
 import datetime
 import os
+# Print current working directory
+print(f"Current working directory: {os.getcwd()}")
+
+# List contents of the directory
+print(f"Contents of the directory: {os.listdir()}")
 
 # Set the working directory to the script's directory
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+# Print current working directory after change
+print(f"Current working directory after change: {os.getcwd()}")
+
 # Get the absolute path of the response.json file
 response_file_path = os.path.join(os.getcwd(), 'response.json')
+print(f"Absolute path of response.json: {response_file_path}")
 
 # Read JSON from file
 with open(response_file_path, 'r') as file:
