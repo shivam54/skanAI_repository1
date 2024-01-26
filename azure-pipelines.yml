@@ -8,7 +8,7 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   steps:
-  - task: Bash@3
+  - task: Bash
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
@@ -18,7 +18,7 @@ jobs:
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
-  - task: PublishPipelineArtifact@1
+  - task: PublishPipelineArtifact
     displayName: 'Publish Artifact'
     inputs:
       targetPath: '$(Build.ArtifactStagingDirectory)'
@@ -29,32 +29,32 @@ jobs:
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   steps:
-  - task: DownloadPipelineArtifact@2
+  - task: DownloadPipelineArtifact
     displayName: 'Download Artifact'
     inputs:
       artifact: 'responseArtifacts'
       path: $(Build.ArtifactStagingDirectory)
 
-  - task: CopyFiles@2
+  - task: CopyFiles
     displayName: 'Copy Python Script to Staging Directory'
     inputs:
       SourceFolder: '$(System.DefaultWorkingDirectory)'
       Contents: 'manipulate_json.py'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: Bash@3
+  - task: Bash
     displayName: 'List Contents of Staging Directory'
     inputs:
       targetType: 'inline'
       script: 'ls -R $(Build.ArtifactStagingDirectory)'
 
-  - task: Bash@3
+  - task: Bash
     displayName: 'Print Content of response.json'
     inputs:
       targetType: 'inline'
       script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
 
-  - task: Bash@3
+  - task: Bash
     displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
