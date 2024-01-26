@@ -13,12 +13,16 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        # Calling the "GET" Operation 
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-        
-        # storing response in variable
-        GetjsonResponse=$(curl -s $apiUrl)
-        echo "JSON Response: $GetjsonResponse"
+        jsonResponse=$(curl -s $apiUrl)
+        echo "JSON Response: $jsonResponse"
+
+  - task: CopyFiles@2
+    displayName: 'Copy response.json to Staging Directory'
+    inputs:
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: 'response.json'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact'
@@ -53,8 +57,4 @@ jobs:
     displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
-      script: |
-        echo "Current Directory: $(System.DefaultWorkingDirectory)"
-        echo "Contents of Directory: $(ls -a)"
-        echo "Contents of Staging Directory: $(ls -a $(Build.ArtifactStagingDirectory))"
-        /usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+      script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
