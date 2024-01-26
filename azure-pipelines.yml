@@ -13,16 +13,12 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        # Debug information
-        echo "API URL: $apiUrl"
-
         # Calling the "GET" Operation 
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
         
         # storing response in variable
-        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $? and error message: $?"
-
-        echo "JSON Response: $jsonResponse"
+        GetjsonResponse=$(curl -s $apiUrl)
+        echo "JSON Response: $GetjsonResponse"
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact'
@@ -45,7 +41,7 @@ jobs:
     displayName: 'List Contents of Staging Directory'
     inputs:
       targetType: 'inline'
-      script: 'ls $(Build.ArtifactStagingDirectory)'
+      script: 'ls -R $(Build.ArtifactStagingDirectory)'
 
   - task: Bash@3
     displayName: 'Print Content of response.json'
@@ -57,4 +53,8 @@ jobs:
     displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
-      script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+      script: |
+        echo "Current Directory: $(System.DefaultWorkingDirectory)"
+        echo "Contents of Directory: $(ls -a)"
+        echo "Contents of Staging Directory: $(ls -a $(Build.ArtifactStagingDirectory))"
+        /usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
