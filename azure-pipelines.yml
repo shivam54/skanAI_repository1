@@ -9,6 +9,7 @@ jobs:
   displayName: 'Calling Get API and Displaying the response'
   steps:
   - task: Bash@3
+    displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
@@ -25,6 +26,7 @@ jobs:
   dependsOn: CallingGetApi
   steps:
   - task: Bash@3
+    displayName: 'Manipulate Response with Python'
     inputs:
       targetType: 'inline'
       script: |
