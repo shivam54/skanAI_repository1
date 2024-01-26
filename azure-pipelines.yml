@@ -33,11 +33,12 @@ jobs:
         manipulate_json.py
         response.json
       TargetFolder: $(Build.ArtifactStagingDirectory)
+
   - task: Bash@3
-  displayName: 'List Contents of Directory'
-  inputs:
-    targetType: 'inline'
-    script: 'ls $(Build.ArtifactStagingDirectory)'    
+    displayName: 'List Contents of Directory'
+    inputs:
+      targetType: 'inline'
+      script: 'ls $(Build.ArtifactStagingDirectory)'
 
   - task: Bash@3
     displayName: 'Run Python Script'
