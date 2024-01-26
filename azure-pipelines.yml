@@ -29,10 +29,10 @@ jobs:
     displayName: 'Copy Python Script and Response File'
     inputs:
      SourceFolder: '$(System.DefaultWorkingDirectory)'
-    Contents: |
+     Contents: |
       manipulate_json.py
       response.json
-      TargetFolder: $(Build.ArtifactStagingDirectory)
+     TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
     displayName: 'List Contents of Directory'
