@@ -8,8 +8,7 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   steps:
-  - task: Bash@3
- # displayName: 'Call GET Operation and Save Response'
+ - task: Bash@3
   inputs:
     targetType: 'inline'
     script: |
@@ -18,12 +17,6 @@ jobs:
       # storing response in variable
       jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
       echo "JSON Response: $jsonResponse"
-
-
-
-        echo "JSON Response: $jsonResponse"
-        # Save response to a file for Python script to read
-        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
         
         # Debug information
         echo "Current Directory: $(System.DefaultWorkingDirectory)"
