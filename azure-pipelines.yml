@@ -9,15 +9,16 @@ jobs:
   displayName: 'Calling Get API and Displaying the response'
   steps:
   - task: Bash@3
-    displayName: 'Call GET Operation and Save Response'
-    inputs:
-      targetType: 'inline'
-     script: |
+  displayName: 'Call GET Operation and Save Response'
+  inputs:
+    targetType: 'inline'
+    script: |
       # Calling the "GET" Operation 
       apiUrl="https://jsonplaceholder.typicode.com/todos/1"
       # storing response in variable
       jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
       echo "JSON Response: $jsonResponse"
+
 
 
         echo "JSON Response: $jsonResponse"
