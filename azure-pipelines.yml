@@ -31,7 +31,6 @@ jobs:
       SourceFolder: $(Build.SourcesDirectory)
       Contents: |
         manipulate_json.py
-        response.json
       TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
