@@ -26,10 +26,12 @@ jobs:
   dependsOn: CallingGetApi
   steps:
   - task: CopyFiles@2
-    displayName: 'Copy Python Script'
+    displayName: 'Copy Python Script and Response File'
     inputs:
       SourceFolder: $(Build.SourcesDirectory)
-      Contents: 'manipulate_json.py'
+      Contents: |
+        manipulate_json.py
+        response.json
       TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
