@@ -9,13 +9,18 @@ jobs:
   displayName: 'Calling Get API and Displaying the response'
   steps:
   - task: Bash@3
+    displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
+        # Debug information
+        echo "API URL: $apiUrl"
+
         # Calling the "GET" Operation 
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+        
         # storing response in variable
-        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $?"
+        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $? and error message: $?"
 
         echo "JSON Response: $jsonResponse"
 
@@ -24,17 +29,23 @@ jobs:
   dependsOn: CallingGetApi
   steps:
   - task: CopyFiles@2
-    displayName: 'Copy Python Script'
+    displayName: 'Copy Python Script and Response File'
     inputs:
       SourceFolder: '$(System.DefaultWorkingDirectory)'
       Contents: 'manipulate_json.py'
       TargetFolder: $(Build.ArtifactStagingDirectory)
-      
+
+  - task: Bash@3
+    displayName: 'List Contents of Staging Directory'
+    inputs:
+      targetType: 'inline'
+      script: 'ls $(Build.ArtifactStagingDirectory)'
+
   - task: Bash@3
     displayName: 'Print Content of response.json'
     inputs:
       targetType: 'inline'
-      script: 'ls $(Build.ArtifactStagingDirectory) && cat $(Build.ArtifactStagingDirectory)/response.json'
+      script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
 
   - task: Bash@3
     displayName: 'Run Python Script'
