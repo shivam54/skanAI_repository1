@@ -13,16 +13,21 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
+        # Calling the "GET" Operation 
+        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+
         # Debug information
         echo "API URL: $apiUrl"
 
-        # Calling the "GET" Operation 
-        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-        
         # storing response in variable
-        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $? and error message: $?"
-
+        jsonResponse=$(curl -s $apiUrl)
         echo "JSON Response: $jsonResponse"
+
+        # Save response to a file for Python script to read
+        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
+
+        # Debug information
+        echo "Contents of Staging Directory: $(ls -a $(Build.ArtifactStagingDirectory))"
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
