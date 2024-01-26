@@ -2,6 +2,9 @@ import json
 import datetime
 import os
 
+# Set the working directory to the script's directory
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
 # Get the absolute path of the response.json file
 response_file_path = os.path.join(os.getcwd(), 'response.json')
 
