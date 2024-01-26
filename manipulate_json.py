@@ -2,14 +2,13 @@ import json
 import datetime
 import os
 
-# Get the absolute path of the script's directory
-script_directory = os.path.dirname(os.path.abspath(__file__))
+# Get the absolute path of the response.json file
+response_file_path = os.path.join(os.getcwd(), 'response.json')
 
 # Read JSON from file
-response_file_path = os.path.join(script_directory, 'response.json')
 with open(response_file_path, 'r') as file:
     data = json.load(file)
-
+    
 # Manipulate data
 timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 data['title'] = f'Updated Title - {timestamp} shivamData'
