@@ -19,7 +19,7 @@ jobs:
         jsonResponse=$(curl -s $apiUrl)
         echo "JSON Response: $jsonResponse"
         # Save response to a file for Python script to read
-        echo "$jsonResponse" > response.json
+        echo "$jsonResponse" > $(Agent.TempDirectory)/response.json
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
@@ -29,4 +29,4 @@ jobs:
     displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
-      script: '/usr/bin/python3 manipulate_json.py'
+      script: '/usr/bin/python3 $(Agent.TempDirectory)/manipulate_json.py'
