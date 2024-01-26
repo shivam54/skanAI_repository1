@@ -30,12 +30,11 @@ jobs:
       Contents: 'manipulate_json.py'
       TargetFolder: $(Build.ArtifactStagingDirectory)
       
-   - task: Bash@3
+  - task: Bash@3
     displayName: 'Print Content of response.json'
     inputs:
       targetType: 'inline'
       script: 'ls $(Build.ArtifactStagingDirectory) && cat $(Build.ArtifactStagingDirectory)/response.json'
-
 
   - task: Bash@3
     displayName: 'Run Python Script'
