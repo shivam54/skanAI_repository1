@@ -12,12 +12,12 @@ jobs:
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
-      script: |
-        # Calling the "GET" Operation 
-        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-        # storing response in variable
-       jsonResponse="$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)"
-       echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
+     script: |
+      # Calling the "GET" Operation 
+      apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+      # storing response in variable
+      jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
+      echo "JSON Response: $jsonResponse"
 
 
         echo "JSON Response: $jsonResponse"
