@@ -8,15 +8,15 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   steps:
- - task: Bash@3
-  inputs:
-    targetType: 'inline'
-    script: |
-      # Calling the "GET" Operation 
-      apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-      # storing response in variable
-      jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
-      echo "JSON Response: $jsonResponse"
+  - task: Bash@3
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Calling the "GET" Operation 
+        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+        # storing response in variable
+        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
+        echo "JSON Response: $jsonResponse"
         
         # Debug information
         echo "Current Directory: $(System.DefaultWorkingDirectory)"
@@ -53,4 +53,3 @@ jobs:
     inputs:
       targetType: 'inline'
       script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
-
