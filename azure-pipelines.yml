@@ -28,20 +28,27 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy Python Script and Response File'
     inputs:
-     SourceFolder: '$(System.DefaultWorkingDirectory)'
-     Contents: |
-      manipulate_json.py
-      response.json
-     TargetFolder: $(Build.ArtifactStagingDirectory)
+      SourceFolder: '$(System.DefaultWorkingDirectory)'
+      Contents: |
+        manipulate_json.py
+        response.json
+      TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
-    displayName: 'List Contents of Directory'
+    displayName: 'List Contents of Staging Directory'
     inputs:
       targetType: 'inline'
       script: 'ls $(Build.ArtifactStagingDirectory)'
+
+  - task: Bash@3
+    displayName: 'Print Content of response.json'
+    inputs:
+      targetType: 'inline'
+      script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
 
   - task: Bash@3
     displayName: 'Run Python Script'
     inputs:
       targetType: 'inline'
       script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+
