@@ -28,9 +28,10 @@ jobs:
   - task: CopyFiles@2
     displayName: 'Copy Python Script and Response File'
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)
-      Contents: |
-        manipulate_json.py
+     SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: |
+      manipulate_json.py
+      response.json
       TargetFolder: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
