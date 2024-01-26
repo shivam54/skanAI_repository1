@@ -15,7 +15,8 @@ jobs:
         # Calling the "GET" Operation 
         apiUrl="https://jsonplaceholder.typicode.com/todos/1"
         # storing response in variable
-        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json)
+        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $?"
+
         echo "JSON Response: $jsonResponse"
 
 - job: ManipulatingResponse
@@ -28,12 +29,13 @@ jobs:
       SourceFolder: '$(System.DefaultWorkingDirectory)'
       Contents: 'manipulate_json.py'
       TargetFolder: $(Build.ArtifactStagingDirectory)
-
-  - task: Bash@3
+      
+   - task: Bash@3
     displayName: 'Print Content of response.json'
     inputs:
       targetType: 'inline'
-      script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
+      script: 'ls $(Build.ArtifactStagingDirectory) && cat $(Build.ArtifactStagingDirectory)/response.json'
+
 
   - task: Bash@3
     displayName: 'Run Python Script'
