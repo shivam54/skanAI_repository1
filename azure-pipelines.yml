@@ -6,29 +6,16 @@ pool:
 
 jobs:
 - job: InstallDependencies
-  displayName: 'Install Dependencies (installing jq require for manipulation)'
+  displayName: 'Install Dependencies (installing Python)'
   steps:
-  - task: UseDotNet@2
+  - task: UsePythonVersion@0
     inputs:
-      packageType: 'sdk'
-      version: '3.1.x'
-    displayName: 'Install .NET SDK'
+      versionSpec: '3.x'
+    displayName: 'Install Python'
 
-  - task: Bash@3
-    inputs:
-      targetType: 'inline'
-      script: |
-        set -e  
-        if ! command -v jq >/dev/null 2>&1 ; then
-          sudo apt-get update
-          sudo apt-get install jq -y
-        else
-          echo "jq is already installed."
-        fi
-    displayName: 'Install jq if not already installed'
-  
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
+  dependsOn: InstallDependencies
   steps:
   - task: Bash@3
     inputs:
@@ -39,17 +26,31 @@ jobs:
         # storing response in variable
         jsonResponse=$(curl -s $apiUrl)
         echo "JSON Response: $jsonResponse"
+        # Save response to a file for Python script to read
+        echo "$jsonResponse" > response.json
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   steps:
-  - task: Bash@3
+  - task: PythonScript@0
     inputs:
-      targetType: 'inline'
+      scriptSource: 'inline'
       script: |
-        timestamp=$(date +"%Y-%m-%d %H:%M:%S")
-        # storing response in variable 
-        manipulatedResponse=$(echo $jsonResponse | jq --arg timestamp "$timestamp" '.title = "Updated Title - $timestamp shivamData"')
-        
-        echo "Manipulated JSON Response: $manipulatedResponse"
+        import json
+        import datetime
+
+        # Read JSON from file
+        with open('response.json', 'r') as file:
+            data = json.load(file)
+
+        # Manipulate data
+        timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data['title'] = f'Updated Title - {timestamp} shivamData'
+
+        # Save manipulated data back to file
+        with open('manipulatedResponse.json', 'w') as file:
+            json.dump(data, file, indent=2)
+
+        # Print manipulated data
+        print(f"Manipulated JSON Response: {json.dumps(data, indent=2)}")
