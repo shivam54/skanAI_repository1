@@ -9,7 +9,7 @@ jobs:
   displayName: 'Calling Get API and Displaying the response'
   steps:
   - task: Bash@3
-  displayName: 'Call GET Operation and Save Response'
+ # displayName: 'Call GET Operation and Save Response'
   inputs:
     targetType: 'inline'
     script: |
