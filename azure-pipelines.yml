@@ -13,32 +13,33 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        # Calling the "GET" Operation 
-        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-
         # Debug information
         echo "API URL: $apiUrl"
 
+        # Calling the "GET" Operation 
+        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+        
         # storing response in variable
-        jsonResponse=$(curl -s $apiUrl)
+        jsonResponse=$(curl -s $apiUrl -o $(Build.ArtifactStagingDirectory)/response.json) || echo "Error: Curl command failed with exit code $? and error message: $?"
+
         echo "JSON Response: $jsonResponse"
 
-        # Save response to a file for Python script to read
-        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
-
-        # Debug information
-        echo "Contents of Staging Directory: $(ls -a $(Build.ArtifactStagingDirectory))"
+  - task: PublishPipelineArtifact@1
+    displayName: 'Publish Artifact'
+    inputs:
+      targetPath: '$(Build.ArtifactStagingDirectory)'
+      artifact: 'responseArtifacts'
+      publishLocation: 'pipeline'
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   steps:
-  - task: CopyFiles@2
-    displayName: 'Copy Python Script and Response File'
+  - task: DownloadPipelineArtifact@2
+    displayName: 'Download Artifact'
     inputs:
-      SourceFolder: '$(System.DefaultWorkingDirectory)'
-      Contents: 'manipulate_json.py'
-      TargetFolder: $(Build.ArtifactStagingDirectory)
+      artifact: 'responseArtifacts'
+      path: $(Build.ArtifactStagingDirectory)
 
   - task: Bash@3
     displayName: 'List Contents of Staging Directory'
