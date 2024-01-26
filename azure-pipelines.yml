@@ -20,8 +20,6 @@ jobs:
         echo "JSON Response: $jsonResponse"
         # Save response to a file for Python script to read
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
-      env:
-        BUILD_ARTIFACTSTAGINGDIRECTORY: $(Build.ArtifactStagingDirectory)
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
