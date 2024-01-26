@@ -5,7 +5,7 @@ pool:
   name: shivamPool
 
 jobs:
-- job: 'Calling Get Api'
+- job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   steps:
   - task: Bash@3
@@ -18,9 +18,9 @@ jobs:
         jsonResponse=$(curl -s $apiUrl)
         echo "JSON Response: $jsonResponse"
 
-- job: 'Manipulating Response(Adding Timestamp)'
-  displayName: 'Manipulating Response - Appending Timestamp'
-  dependsOn: 'Calling Get Api'
+- job: ManipulatingResponse
+  displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
+  dependsOn: CallingGetApi
   steps:
   - task: Bash@3
     inputs:
@@ -28,6 +28,6 @@ jobs:
       script: |
         timestamp=$(date +"%Y-%m-%d %H:%M:%S")
         # storing response in variable 
-        manipulatedResponse=$(echo $jsonResponse | jq --arg timestamp "$timestamp" '.title = "Updated Title - $timestamp updatedTitle"')
+        manipulatedResponse=$(echo $jsonResponse | jq --arg timestamp "$timestamp" '.title = "Updated Title - $timestamp shivamData"')
         
         echo "Manipulated JSON Response: $manipulatedResponse"
