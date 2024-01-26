@@ -1,0 +1,21 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'macOS-latest'
+
+steps:
+- task: Bash@3
+  inputs:
+    targetType: 'inline'
+    script: |
+      # Call the GET REST API and store the response
+      apiUrl="https://jsonplaceholder.typicode.com/todos/1"
+      jsonResponse=$(curl -s $apiUrl)
+      echo "JSON Response: $jsonResponse"
+      # Manipulate one attribute in the JSON response (e.g., update the value of "title")
+     # manipulatedResponse=$(echo $jsonResponse | jq '.title = "Updated Title"')
+
+      # Print the manipulated JSON response
+     # echo "Manipulated JSON Response: $manipulatedResponse"
+  displayName: 'Call API and Get JSON'
