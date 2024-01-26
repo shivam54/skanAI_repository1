@@ -18,11 +18,12 @@ jobs:
         echo "JSON Response: $jsonResponse"
 
   - task: CopyFiles@2
-    displayName: 'Copy response.json to Staging Directory'
-    inputs:
-      SourceFolder: '$(System.DefaultWorkingDirectory)'
-      Contents: 'response.json'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+  displayName: 'Copy response.json to Staging Directory'
+  inputs:
+    SourceFolder: '$(System.DefaultWorkingDirectory)'
+    Contents: '**/response.json'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
 
   - task: PublishPipelineArtifact@1
     displayName: 'Publish Artifact'
