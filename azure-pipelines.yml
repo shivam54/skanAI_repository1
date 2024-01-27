@@ -11,14 +11,6 @@ parameters:
   - 'https://jsonplaceholder.typicode.com/todos/1'
   - 'https://api.example.com/endpoint'
 
-resources:
-  repositories:
-    - repository: templates
-      type: github
-      name: shivam54/skanAI_repository1
-      ref: main
-      endpoint: shivam54  # Assuming 'shivam54' is your service connection name
-
 trigger:
 - main
 
@@ -43,6 +35,35 @@ jobs:
         targetPath: '$(Build.ArtifactStagingDirectory)'
         artifact: 'responseArtifacts'
         publishLocation: 'pipeline'
+
+    - task: HTTP request
+      displayName: 'Send Team Notification - Calling Get API'
+      inputs:
+        method: 'POST'
+        headers: |
+          Content-Type: application/json
+        body: |
+          {
+            "text": "Pipeline Run Status: $(pipeline.status)",
+            "attachments": [
+              {
+                "title": "Pipeline Parameters",
+                "fields": [
+                  {
+                    "title": "Agent Pool Name",
+                    "value": "$(parameters.agentPoolName)",
+                    "short": true
+                  },
+                  {
+                    "title": "API URL",
+                    "value": "$(parameters.apiUrl)",
+                    "short": true
+                  }
+                ]
+              }
+            ]
+          }
+        uri: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
@@ -80,3 +101,32 @@ jobs:
       inputs:
         targetType: 'inline'
         script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+
+    - task: HTTP request
+      displayName: 'Send Team Notification - Manipulating Response'
+      inputs:
+        method: 'POST'
+        headers: |
+          Content-Type: application/json
+        body: |
+          {
+            "text": "Pipeline Run Status: $(pipeline.status)",
+            "attachments": [
+              {
+                "title": "Pipeline Parameters",
+                "fields": [
+                  {
+                    "title": "Agent Pool Name",
+                    "value": "$(parameters.agentPoolName)",
+                    "short": true
+                  },
+                  {
+                    "title": "API URL",
+                    "value": "$(parameters.apiUrl)",
+                    "short": true
+                  }
+                ]
+              }
+            ]
+          }
+        uri: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
