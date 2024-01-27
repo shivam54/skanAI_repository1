@@ -5,13 +5,10 @@ parameters:
   displayName: 'Agent Pool Name'
   type: object
   default: 
-    value: 'shivamPool'
-    label: 'Shivam Pool'
+    value: shivamPool
   values:
-  - value: 'shivamPool'
-    label: 'Shivam Pool'
-  - value: 'otherPool'
-    label: 'Other Pool'
+  - value: shivamPool
+  - value: otherPool
 
 - name: apiUrl
   displayName: 'API URL'
