@@ -36,34 +36,28 @@ jobs:
         artifact: 'responseArtifacts'
         publishLocation: 'pipeline'
 
-    - task: HTTP request
+    - script: |
+        curl -X POST -H "Content-Type: application/json" -d '{
+          "text": "Pipeline Run Status: $(pipeline.status)",
+          "attachments": [
+            {
+              "title": "Pipeline Parameters",
+              "fields": [
+                {
+                  "title": "Agent Pool Name",
+                  "value": "$(parameters.agentPoolName)",
+                  "short": true
+                },
+                {
+                  "title": "API URL",
+                  "value": "$(parameters.apiUrl)",
+                  "short": true
+                }
+              ]
+            }
+          ]
+        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
       displayName: 'Send Team Notification - Calling Get API'
-      inputs:
-        method: 'POST'
-        headers: |
-          Content-Type: application/json
-        body: |
-          {
-            "text": "Pipeline Run Status: $(pipeline.status)",
-            "attachments": [
-              {
-                "title": "Pipeline Parameters",
-                "fields": [
-                  {
-                    "title": "Agent Pool Name",
-                    "value": "$(parameters.agentPoolName)",
-                    "short": true
-                  },
-                  {
-                    "title": "API URL",
-                    "value": "$(parameters.apiUrl)",
-                    "short": true
-                  }
-                ]
-              }
-            ]
-          }
-        uri: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
@@ -102,31 +96,25 @@ jobs:
         targetType: 'inline'
         script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
 
-    - task: HTTP request
+    - script: |
+        curl -X POST -H "Content-Type: application/json" -d '{
+          "text": "Pipeline Run Status: $(pipeline.status)",
+          "attachments": [
+            {
+              "title": "Pipeline Parameters",
+              "fields": [
+                {
+                  "title": "Agent Pool Name",
+                  "value": "$(parameters.agentPoolName)",
+                  "short": true
+                },
+                {
+                  "title": "API URL",
+                  "value": "$(parameters.apiUrl)",
+                  "short": true
+                }
+              ]
+            }
+          ]
+        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
       displayName: 'Send Team Notification - Manipulating Response'
-      inputs:
-        method: 'POST'
-        headers: |
-          Content-Type: application/json
-        body: |
-          {
-            "text": "Pipeline Run Status: $(pipeline.status)",
-            "attachments": [
-              {
-                "title": "Pipeline Parameters",
-                "fields": [
-                  {
-                    "title": "Agent Pool Name",
-                    "value": "$(parameters.agentPoolName)",
-                    "short": true
-                  },
-                  {
-                    "title": "API URL",
-                    "value": "$(parameters.apiUrl)",
-                    "short": true
-                  }
-                ]
-              }
-            ]
-          }
-        uri: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
