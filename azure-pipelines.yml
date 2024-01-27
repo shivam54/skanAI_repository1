@@ -8,8 +8,7 @@ resources:
 
 parameters:
 - name: azure-pipelines-parameters
-  source: templates
-  path: azure-pipelines.parameters.yml
+  template: azure-pipelines.parameters.yml@templates
 
 trigger:
 - main
