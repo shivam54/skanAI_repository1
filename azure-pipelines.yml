@@ -2,12 +2,18 @@ parameters:
 - name: agentPoolName
   displayName: 'Agent Pool Name'
   type: string
-  default: 'shivamPool'
+  default: 'Select Agent Pool'
+  values:
+  - 'shivamPool'
+  - 'otherPool'
 
 - name: apiUrl
   displayName: 'API URL'
   type: string
-  default: 'https://jsonplaceholder.typicode.com/todos/1'
+  default: 'Select API URL'
+  values:
+  - 'https://jsonplaceholder.typicode.com/todos/1'
+  - 'https://api.example.com/endpoint'
 
 jobs:
 - job: CallingGetApi
