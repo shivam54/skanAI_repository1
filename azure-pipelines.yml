@@ -2,26 +2,17 @@
 
 parameters:
 - name: agentPoolName
-  displayName: 'Agent Pool Name'
-  type: object
-  default: 
-    value: shivamPool
   values:
-  - value: shivamPool
-  - value: otherPool
+   - shivamPool
+   - otherPool
 
 - name: apiUrl
   displayName: 'API URL'
   type: object
-  default: 
-    value: 'https://jsonplaceholder.typicode.com/todos/1'
-    label: 'JSON Placeholder API'
   values:
-  - value: 'https://jsonplaceholder.typicode.com/todos/1'
-    label: 'JSON Placeholder API'
-  - value: 'https://api.example.com/endpoint'
-    label: 'Example API'
-
+   - 'https://jsonplaceholder.typicode.com/todos/1'
+   - 'https://api.example.com/endpoint'
+   
 trigger:
 - main
 
