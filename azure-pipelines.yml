@@ -2,14 +2,10 @@
 
 resources:
   repositories:
-    - repository: self
-      ref: main  # Assuming your pipeline YAML file is in the main branch
-      clean: true
-
     - repository: templates
       type: github
       name: shivam54/skanAI_repository1
-      ref: main  # Assuming your parameter file is in the main branch
+      ref: main
       endpoint: shivam54  # Assuming 'shivam54' is your service connection name
 
 variables:
@@ -22,14 +18,14 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   pool:
-    name: ${{ parameters.agentPoolName }}
+    name: ${{ variables.agentPoolName }}
   steps:
   - task: Bash@3
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
-        jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
+        jsonResponse=$(curl -s "${{ variables.apiUrl }}")
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
@@ -44,7 +40,7 @@ jobs:
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   pool:
-    name: ${{ parameters.agentPoolName }}
+    name: ${{ variables.agentPoolName }}
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: 'Download Artifact'
