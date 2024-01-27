@@ -34,8 +34,9 @@ jobs:
         publishLocation: 'pipeline'
 
     - script: |
+        $status = if ("$(Build.Status)" -eq "Succeeded") { "Passed" } else { "Failed" }
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: ${{ if eq(variables['Build.Status'], 'Succeeded') }}Passed${{ else }}Failed${{ endif }}",
+          "text": "Job 'CallingGetApi' Status: $status",
           "attachments": [
             {
               "title": "Pipeline Parameters",
@@ -77,8 +78,9 @@ jobs:
       displayName: 'Run Python Script'
 
     - script: |
+        $status = if ("$(Build.Status)" -eq "Succeeded") { "Passed" } else { "Failed" }
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'ManipulatingResponse' Status: ${{ if eq(variables['Build.Status'], 'Succeeded') }}Passed${{ else }}Failed${{ endif }}",
+          "text": "Job 'ManipulatingResponse' Status: $status",
           "attachments": [
             {
               "title": "Pipeline Parameters",
