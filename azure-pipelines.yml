@@ -44,7 +44,7 @@ jobs:
         echo "API URL:"
         echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}"
+          "text": "Job 'CallingGetApi' Status: '"$Status"'... Agent Pool Name: ${{ parameters.agentPoolName }} AND API URL is : ${{ parameters.apiUrl }}"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - CallingGetApi'
 
@@ -86,6 +86,6 @@ jobs:
         echo "API URL:"
         echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'ManipulatingResponse' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}"
+          "text": "Job 'CallingGetApi' Status: '"$Status"'... Agent Pool Name: ${{ parameters.agentPoolName }} AND API URL is : ${{ parameters.apiUrl }}"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - ManipulatingResponse'
