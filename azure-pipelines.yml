@@ -1,19 +1,5 @@
-parameters:
-- name: agentPoolName
-  displayName: 'Agent Pool Name'
-  type: string
-  default: 'Select Agent Pool'
-  values:
-  - 'shivamPool'
-  - 'otherPool'
-
-- name: apiUrl
-  displayName: 'API URL'
-  type: string
-  default: 'Select API URL'
-  values:
-  - 'https://jsonplaceholder.typicode.com/todos/1'
-  - 'https://api.example.com/endpoint'
+trigger:
+- main
 
 jobs:
 - job: CallingGetApi
@@ -26,7 +12,7 @@ jobs:
     inputs:
       targetType: 'inline'
       script: |
-        jsonResponse=$(curl -s ${{ parameters.apiUrl }})
+        jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
