@@ -35,7 +35,7 @@ jobs:
 
     - script: |
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: $(Build.Status)",
+          "text": "Job 'CallingGetApi' Status: $(Build.Reason) - $(Build.Status)",
           "attachments": [
             {
               "title": "Pipeline Parameters",
@@ -78,7 +78,7 @@ jobs:
 
     - script: |
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'ManipulatingResponse' Status: $(Build.Status)",
+          "text": "Job 'ManipulatingResponse' Status: $(Build.Reason) - $(Build.Status)",
           "attachments": [
             {
               "title": "Pipeline Parameters",
