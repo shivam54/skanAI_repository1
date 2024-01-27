@@ -18,14 +18,14 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   pool:
-    name: ${{ variables.agentPoolName }}
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: Bash@3
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
-        jsonResponse=$(curl -s "${{ variables.apiUrl }}")
+        jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
@@ -40,7 +40,7 @@ jobs:
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   pool:
-    name: ${{ variables.agentPoolName }}
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: 'Download Artifact'
