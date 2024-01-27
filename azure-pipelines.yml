@@ -11,6 +11,10 @@ parameters:
   - 'https://jsonplaceholder.typicode.com/todos/1'
   - 'https://api.example.com/endpoint'
 
+- name: webhookUrl
+  type: string
+  default: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
+
 trigger:
 - main
 
@@ -37,8 +41,8 @@ jobs:
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
         echo "Job 'CallingGetApi' Status: $Status"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL: ${{ parameters.apiUrl }}",
-        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
+          "text": "Job 'CallingGetApi' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}",
+        }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - CallingGetApi'
 
 - job: ManipulatingResponse
@@ -76,6 +80,6 @@ jobs:
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
         echo "Job 'ManipulatingResponse' Status: $Status"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'ManipulatingResponse' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL: ${{ parameters.apiUrl }}",
-        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
+          "text": "Job 'ManipulatingResponse' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}",
+        }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - ManipulatingResponse'
