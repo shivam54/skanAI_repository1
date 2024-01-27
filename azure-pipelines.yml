@@ -35,7 +35,7 @@ jobs:
 
     - script: |
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: $(Build.Reason) - $(Build.Status)",
+          "text": "Job 'CallingGetApi' Status: $(Build.Reason) - $(Status)",
           "attachments": [
             {
               "title": "Pipeline Parameters",
@@ -77,8 +77,13 @@ jobs:
       displayName: 'Run Python Script'
 
     - script: |
+        if [[ "$(Build.Reason)" == "Manual" ]]; then
+          Status="Pending"
+        else
+          Status="$(Build.Status)"
+        fi
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'ManipulatingResponse' Status: $(Build.Reason) - $(Build.Status)",
+          "text": "Job 'ManipulatingResponse' Status: $(Build.Reason) - $Status",
           "attachments": [
             {
               "title": "Pipeline Parameters",
