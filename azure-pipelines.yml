@@ -9,7 +9,7 @@ parameters:
   type: object
   values:
   - 'https://jsonplaceholder.typicode.com/todos/1'
-  - 'https://api.example.com/endpoint'
+  - 'https://jsonplaceholder.typicode.com/todos/2'
 
 - name: webhookUrl
   type: string
@@ -39,10 +39,12 @@ jobs:
 
     - bash: |
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
-        printf -v message "Job 'CallingGetApi' Status: %s\nAgent Pool Name: %s\nAPI URL:\n%s" "$Status" "${{ parameters.agentPoolName }}" "${{ parameters.apiUrl }}"
-        echo "$message"
+        echo "Job 'CallingGetApi' Status: $Status"
+        echo "Agent Pool Name: ${{ parameters.agentPoolName }}"
+        echo "API URL:"
+        echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "'"$message"'"
+          "text": "Job 'CallingGetApi' Status: '"$Status"'"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - CallingGetApi'
 
@@ -79,9 +81,11 @@ jobs:
 
     - bash: |
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
-        printf -v message "Job 'ManipulatingResponse' Status: %s\nAgent Pool Name: %s\nAPI URL:\n%s" "$Status" "${{ parameters.agentPoolName }}" "${{ parameters.apiUrl }}"
-        echo "$message"
+        echo "Job 'ManipulatingResponse' Status: $Status"
+        echo "Agent Pool Name: ${{ parameters.agentPoolName }}"
+        echo "API URL:"
+        echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "'"$message"'"
+          "text": "Job 'ManipulatingResponse' Status: '"$Status"'"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - ManipulatingResponse'
