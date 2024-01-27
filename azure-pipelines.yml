@@ -2,9 +2,11 @@
 
 parameters:
 - name: agentPoolName
+  displayName: 'Select Agent Pool'
+  type: object
   values:
-   - shivamPool
-   - otherPool
+   - 'shivamPool'
+   - 'otherPool'
 
 - name: apiUrl
   displayName: 'API URL'
