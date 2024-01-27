@@ -1,15 +1,11 @@
 parameters:
 - name: agentPoolName
-  displayName: 'Agent Pool Name'
-  type: stringInput
   default: 'shivamPool'
   values:
   - shivamPool
   - otherPool
 
 - name: apiUrl
-  displayName: 'API URL'
-  type: stringInput
   default: 'https://jsonplaceholder.typicode.com/todos/1'
   values:
   - 'https://jsonplaceholder.typicode.com/todos/1'
