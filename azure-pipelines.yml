@@ -3,12 +3,17 @@
 resources:
   repositories:
     - repository: self
-      # This refers to the current repository where your pipeline YAML resides
-      ref: main  # Assuming your parameter file is in the main branch
+      ref: main  # Assuming your pipeline YAML file is in the main branch
       clean: true
 
+    - repository: templates
+      type: github
+      name: shivam54/skanAI_repository1
+      ref: main  # Assuming your parameter file is in the main branch
+      endpoint: shivam54  # Assuming 'shivam54' is your service connection name
+
 parameters:
-- template: azure-pipelines.parameters.yml@self
+- template: azure-pipelines.parameters.yml@templates
 
 trigger:
 - main
