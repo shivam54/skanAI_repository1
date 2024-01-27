@@ -33,18 +33,11 @@ jobs:
         artifact: 'responseArtifacts'
         publishLocation: 'pipeline'
 
-    - script: |
-        Status=$(if [ "$(Build.Status)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
-        curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job 'CallingGetApi' Status: $Status",
-          "attachments": [
-            {
-              "title": "Pipeline Parameters",
-              "text": "Agent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL: ${{ parameters.apiUrl }}"
-            }
-          ]
-        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
-      displayName: 'Send Team Notification - Calling Get API'
+    - bash: |
+        Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
+        echo "Job 'CallingGetApi' Status: $Status"
+      displayName: 'Print Job Status'
+
 
 
 
