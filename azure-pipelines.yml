@@ -20,14 +20,11 @@ jobs:
   pool:
     name: ${{ parameters.agentPoolName }}
   steps:
-    - task: Bash@3
+    - bash: |
+        jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
+        echo "JSON Response: $jsonResponse"
+        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
       displayName: 'Call GET Operation and Save Response'
-      inputs:
-        targetType: 'inline'
-        script: |
-          jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
-          echo "JSON Response: $jsonResponse"
-          echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Artifact'
@@ -38,25 +35,25 @@ jobs:
 
     - script: |
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Pipeline Run Status: $(pipeline.status)",
+          "text": "Pipeline Run Status: ${{ variables['Build.Reason'] }} - ${{ variables['Build.Status'] }}",
           "attachments": [
             {
               "title": "Pipeline Parameters",
               "fields": [
                 {
                   "title": "Agent Pool Name",
-                  "value": "$(parameters.agentPoolName)",
+                  "value": "${{ parameters.agentPoolName }}",
                   "short": true
                 },
                 {
                   "title": "API URL",
-                  "value": "$(parameters.apiUrl)",
+                  "value": "${{ parameters.apiUrl }}",
                   "short": true
                 }
               ]
             }
           ]
-        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
+        }' YOUR_WEBHOOK_URL_HERE
       displayName: 'Send Team Notification - Calling Get API'
 
 - job: ManipulatingResponse
@@ -78,43 +75,37 @@ jobs:
         Contents: 'manipulate_json.py'
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-    - task: Bash@3
+    - bash: |
+        ls -R $(Build.ArtifactStagingDirectory)
       displayName: 'List Contents of Staging Directory'
-      inputs:
-        targetType: 'inline'
-        script: 'ls -R $(Build.ArtifactStagingDirectory)'
 
-    - task: Bash@3
+    - bash: |
+        cat $(Build.ArtifactStagingDirectory)/response.json
       displayName: 'Print Content of response.json'
-      inputs:
-        targetType: 'inline'
-        script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
 
-    - task: Bash@3
+    - bash: |
+        /usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py
       displayName: 'Run Python Script'
-      inputs:
-        targetType: 'inline'
-        script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
 
     - script: |
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Pipeline Run Status: $(pipeline.status)",
+          "text": "Pipeline Run Status: ${{ variables['Build.Reason'] }} - ${{ variables['Build.Status'] }}",
           "attachments": [
             {
               "title": "Pipeline Parameters",
               "fields": [
                 {
                   "title": "Agent Pool Name",
-                  "value": "$(parameters.agentPoolName)",
+                  "value": "${{ parameters.agentPoolName }}",
                   "short": true
                 },
                 {
                   "title": "API URL",
-                  "value": "$(parameters.apiUrl)",
+                  "value": "${{ parameters.apiUrl }}",
                   "short": true
                 }
               ]
             }
           ]
-        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
+        }' YOUR_WEBHOOK_URL_HERE
       displayName: 'Send Team Notification - Manipulating Response'
