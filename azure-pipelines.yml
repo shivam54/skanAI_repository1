@@ -1,7 +1,7 @@
 parameters:
 - name: agentPoolName
   displayName: 'Agent Pool Name'
-  type: string
+  type: stringInput
   default: 'shivamPool'
   values:
   - shivamPool
@@ -9,7 +9,7 @@ parameters:
 
 - name: apiUrl
   displayName: 'API URL'
-  type: string
+  type: stringInput
   default: 'https://jsonplaceholder.typicode.com/todos/1'
   values:
   - 'https://jsonplaceholder.typicode.com/todos/1'
