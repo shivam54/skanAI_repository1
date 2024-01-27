@@ -7,8 +7,6 @@ resources:
       name: shivam54/skanAI_repository1
       ref: refs/heads/main
       endpoint: shivam54  # Assuming 'shivam54' is your service connection name
-    - repository: self
-      path: azure-pipelines  # This assumes the abc.yml file is in a folder named "azure-pipelines" in your repository
 
 parameters:
 - template: azure-pipelines.parameters.yml@templates
