@@ -1,5 +1,3 @@
-# azure-pipelines.yml
-
 resources:
   repositories:
     - repository: templates
@@ -8,7 +6,7 @@ resources:
       ref: main
       endpoint: shivam54  # Assuming 'shivam54' is your service connection name
 
-variables:
+parameters:
 - template: azure-pipelines.parameters.yml@templates
 
 trigger:
@@ -20,21 +18,21 @@ jobs:
   pool:
     name: ${{ parameters.agentPoolName }}
   steps:
-  - task: Bash@3
-    displayName: 'Call GET Operation and Save Response'
-    inputs:
-      targetType: 'inline'
-      script: |
-        jsonResponse=$(curl -s "${{ variables.apiUrl }}")
-        echo "JSON Response: $jsonResponse"
-        echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
+    - task: Bash@3
+      displayName: 'Call GET Operation and Save Response'
+      inputs:
+        targetType: 'inline'
+        script: |
+          jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
+          echo "JSON Response: $jsonResponse"
+          echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
-  - task: PublishPipelineArtifact@1
-    displayName: 'Publish Artifact'
-    inputs:
-      targetPath: '$(Build.ArtifactStagingDirectory)'
-      artifact: 'responseArtifacts'
-      publishLocation: 'pipeline'
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Artifact'
+      inputs:
+        targetPath: '$(Build.ArtifactStagingDirectory)'
+        artifact: 'responseArtifacts'
+        publishLocation: 'pipeline'
 
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
@@ -42,33 +40,33 @@ jobs:
   pool:
     name: ${{ parameters.agentPoolName }}
   steps:
-  - task: DownloadPipelineArtifact@2
-    displayName: 'Download Artifact'
-    inputs:
-      artifact: 'responseArtifacts'
-      path: $(Build.ArtifactStagingDirectory)
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Artifact'
+      inputs:
+        artifact: 'responseArtifacts'
+        path: $(Build.ArtifactStagingDirectory)
 
-  - task: CopyFiles@2
-    displayName: 'Copy Python Script to Staging Directory'
-    inputs:
-      SourceFolder: '$(System.DefaultWorkingDirectory)'
-      Contents: 'manipulate_json.py'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: CopyFiles@2
+      displayName: 'Copy Python Script to Staging Directory'
+      inputs:
+        SourceFolder: '$(System.DefaultWorkingDirectory)'
+        Contents: 'manipulate_json.py'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
-  - task: Bash@3
-    displayName: 'List Contents of Staging Directory'
-    inputs:
-      targetType: 'inline'
-      script: 'ls -R $(Build.ArtifactStagingDirectory)'
+    - task: Bash@3
+      displayName: 'List Contents of Staging Directory'
+      inputs:
+        targetType: 'inline'
+        script: 'ls -R $(Build.ArtifactStagingDirectory)'
 
-  - task: Bash@3
-    displayName: 'Print Content of response.json'
-    inputs:
-      targetType: 'inline'
-      script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
+    - task: Bash@3
+      displayName: 'Print Content of response.json'
+      inputs:
+        targetType: 'inline'
+        script: 'cat $(Build.ArtifactStagingDirectory)/response.json'
 
-  - task: Bash@3
-    displayName: 'Run Python Script'
-    inputs:
-      targetType: 'inline'
-      script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+    - task: Bash@3
+      displayName: 'Run Python Script'
+      inputs:
+        targetType: 'inline'
+        script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
