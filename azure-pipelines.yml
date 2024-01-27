@@ -1,20 +1,26 @@
-trigger:
-- main
+parameters:
+- name: agentPoolName
+  displayName: 'Agent Pool Name'
+  type: string
+  default: 'shivamPool'
 
-pool:
-  name: shivamPool
+- name: apiUrl
+  displayName: 'API URL'
+  type: string
+  default: 'https://jsonplaceholder.typicode.com/todos/1'
 
 jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
+  pool:
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: Bash@3
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
-        apiUrl="https://jsonplaceholder.typicode.com/todos/1"
-        jsonResponse=$(curl -s $apiUrl)
+        jsonResponse=$(curl -s ${{ parameters.apiUrl }})
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
@@ -28,6 +34,8 @@ jobs:
 - job: ManipulatingResponse
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
+  pool:
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: 'Download Artifact'
@@ -59,4 +67,3 @@ jobs:
     inputs:
       targetType: 'inline'
       script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
-
