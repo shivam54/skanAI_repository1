@@ -39,9 +39,10 @@ jobs:
 
     - bash: |
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
-        echo "Job 'CallingGetApi' Status: $Status"
+        printf -v message "Job 'CallingGetApi' Status: %s\nAgent Pool Name: %s\nAPI URL:\n%s" "$Status" "${{ parameters.agentPoolName }}" "${{ parameters.apiUrl }}"
+        echo "$message"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job '"CallingGetApi"' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}",
+          "text": "'"$message"'"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - CallingGetApi'
 
@@ -78,8 +79,9 @@ jobs:
 
     - bash: |
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
-        echo "Job 'ManipulatingResponse' Status: $Status"
+        printf -v message "Job 'ManipulatingResponse' Status: %s\nAgent Pool Name: %s\nAPI URL:\n%s" "$Status" "${{ parameters.agentPoolName }}" "${{ parameters.apiUrl }}"
+        echo "$message"
         curl -X POST -H "Content-Type: application/json" -d '{
-          "text": "Job '"ManipulatingResponse"' Status: '"$Status"'\nAgent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL:\n${{ parameters.apiUrl }}",
+          "text": "'"$message"'"
         }' ${{ parameters.webhookUrl }}
       displayName: 'Print Job Status and Send Team Notification - ManipulatingResponse'
