@@ -78,3 +78,4 @@ jobs:
     inputs:
       targetType: 'inline'
       script: '/usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py'
+
