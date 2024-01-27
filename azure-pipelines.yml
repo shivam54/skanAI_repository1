@@ -12,7 +12,7 @@ resources:
       ref: main  # Assuming your parameter file is in the main branch
       endpoint: shivam54  # Assuming 'shivam54' is your service connection name
 
-parameters:
+variables:
 - template: azure-pipelines.parameters.yml@templates
 
 trigger:
