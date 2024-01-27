@@ -3,27 +3,19 @@
 parameters:
 - name: agentPoolName
   displayName: 'Agent Pool Name'
-  type: object
-  default: 
-    value: 'shivamPool'
-    label: 'Shivam Pool'
+  type: string
+  default: 'shivamPool'
   values:
-  - value: 'shivamPool'
-    label: 'Shivam Pool'
-  - value: 'otherPool'
-    label: 'Other Pool'
+  - 'shivamPool'
+  - 'otherPool'
 
 - name: apiUrl
   displayName: 'API URL'
-  type: object
-  default: 
-    value: 'https://jsonplaceholder.typicode.com/todos/1'
-    label: 'JSON Placeholder API'
+  type: string
+  default: 'https://jsonplaceholder.typicode.com/todos/1'
   values:
-  - value: 'https://jsonplaceholder.typicode.com/todos/1'
-    label: 'JSON Placeholder API'
-  - value: 'https://api.example.com/endpoint'
-    label: 'Example API'
+  - 'https://jsonplaceholder.typicode.com/todos/1'
+  - 'https://api.example.com/endpoint'
 
 trigger:
 - main
@@ -32,14 +24,14 @@ jobs:
 - job: CallingGetApi
   displayName: 'Calling Get API and Displaying the response'
   pool:
-    name: ${{ parameters.agentPoolName.value }}
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: Bash@3
     displayName: 'Call GET Operation and Save Response'
     inputs:
       targetType: 'inline'
       script: |
-        jsonResponse=$(curl -s "${{ parameters.apiUrl.value }}")
+        jsonResponse=$(curl -s "${{ parameters.apiUrl }}")
         echo "JSON Response: $jsonResponse"
         echo "$jsonResponse" > $(Build.ArtifactStagingDirectory)/response.json
 
@@ -54,7 +46,7 @@ jobs:
   displayName: 'Manipulating Response - Appending Timestamp and keyword "shivamData" '
   dependsOn: CallingGetApi
   pool:
-    name: ${{ parameters.agentPoolName.value }}
+    name: ${{ parameters.agentPoolName }}
   steps:
   - task: DownloadPipelineArtifact@2
     displayName: 'Download Artifact'
