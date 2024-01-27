@@ -34,11 +34,7 @@ jobs:
         publishLocation: 'pipeline'
 
     - script: |
-        if [ "$(Build.Status)" == "Succeeded" ]; then
-          Status="Succeeded"
-        else
-          Status="Failed"
-        fi
+        Status=$(if [ "$(Build.Status)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
         curl -X POST -H "Content-Type: application/json" -d '{
           "text": "Job 'CallingGetApi' Status: $Status",
           "attachments": [
@@ -49,6 +45,7 @@ jobs:
           ]
         }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
       displayName: 'Send Team Notification - Calling Get API'
+
 
 
 - job: ManipulatingResponse
