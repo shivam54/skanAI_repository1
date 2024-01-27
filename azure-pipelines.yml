@@ -36,7 +36,17 @@ jobs:
     - bash: |
         Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
         echo "Job 'CallingGetApi' Status: $Status"
-      displayName: 'Print Job Status'
+        curl -X POST -H "Content-Type: application/json" -d '{
+          "text": "Job 'CallingGetApi' Status: $Status",
+          "attachments": [
+            {
+              "title": "Pipeline Parameters",
+              "text": "Agent Pool Name: ${{ parameters.agentPoolName }}\nAPI URL: ${{ parameters.apiUrl }}"
+            }
+          ]
+        }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
+      displayName: 'Print Job Status and Send Team Notification'
+
 
 
 
@@ -72,12 +82,9 @@ jobs:
         /usr/bin/python3 $(Build.ArtifactStagingDirectory)/manipulate_json.py
       displayName: 'Run Python Script'
 
-    - script: |
-        if [ "$(Build.Status)" == "Succeeded" ]; then
-          Status="Succeeded"
-        else
-          Status="Failed"
-        fi
+    - bash: |
+        Status=$(if [ "$(Agent.JobStatus)" == "Succeeded" ]; then echo "Success"; else echo "Failed"; fi)
+        echo "Job 'ManipulatingResponse' Status: $Status"
         curl -X POST -H "Content-Type: application/json" -d '{
           "text": "Job 'ManipulatingResponse' Status: $Status",
           "attachments": [
@@ -87,4 +94,4 @@ jobs:
             }
           ]
         }' https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6
-      displayName: 'Send Team Notification - Manipulating Response'
+      displayName: 'Print Job Status and Send Team Notification'
