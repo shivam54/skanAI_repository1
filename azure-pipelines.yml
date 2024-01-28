@@ -8,7 +8,7 @@ parameters:
 
 - name: apiUrl
   type: object
-   default: 'https://jsonplaceholder.typicode.com/todos/1'
+  default: 'https://jsonplaceholder.typicode.com/todos/1'
   values:
   - 'https://jsonplaceholder.typicode.com/todos/1'
   - 'https://jsonplaceholder.typicode.com/todos/2'
