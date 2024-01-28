@@ -11,9 +11,13 @@ parameters:
   - 'https://jsonplaceholder.typicode.com/todos/1'
   - 'https://jsonplaceholder.typicode.com/todos/2'
   
-- name: webhookUrl
+- name: webhookUrl_HighSeverity
   type: string
-  default: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/e92b9709b2044ee79c4192a8acae3d44/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
+  default: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/576140f9f41b4452805ac22c3122cd32/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
+
+- name: webhookUrl_LowSeverity
+  type: string
+  default: 'https://skan.webhook.office.com/webhookb2/5a9db735-4761-4f98-83f8-db19a32b2519@e59fe82b-71b9-444c-b711-9e110679544b/IncomingWebhook/56024bfa7eed4f6f93795680d158c846/2ee530b1-cb42-4fe4-86fe-862559dc08b6'
 
 trigger:
 - main
@@ -45,7 +49,7 @@ jobs:
         echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
           "text": "Job 'CallingGetApi' Status: '"$Status"'... Agent Pool Name: ${{ parameters.agentPoolName }} AND API URL is : ${{ parameters.apiUrl }}"
-        }' ${{ parameters.webhookUrl }}
+        }' ${{ parameters.webhookUrl_HighSeverity }}
       displayName: 'Print Job Status and Send Team Notification - CallingGetApi'
 
 - job: ManipulatingResponse
@@ -87,5 +91,5 @@ jobs:
         echo "${{ parameters.apiUrl }}"
         curl -X POST -H "Content-Type: application/json" -d '{
           "text": "Job 'ManipulatingResponse' Status: '"$Status"'... Agent Pool Name: ${{ parameters.agentPoolName }} AND API URL is : ${{ parameters.apiUrl }}"
-        }' ${{ parameters.webhookUrl }}
+        }' ${{ parameters.webhookUrl_LowSeverity }}
       displayName: 'Print Job Status and Send Team Notification - ManipulatingResponse'
