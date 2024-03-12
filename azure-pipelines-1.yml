@@ -19,4 +19,4 @@ steps:
   inputs:
     zapApiUrl: 'http://localhost:9090'  
     zapApiKey: 'shivam1234'  
-    targetUrl: 'https://www.gmail.com/'  
+    targetUrl: 'https://qa2-cpx.skan.ai/'  
