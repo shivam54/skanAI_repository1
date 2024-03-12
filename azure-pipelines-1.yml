@@ -17,6 +17,6 @@ steps:
 
 - task: OwaspZapScan@0
   inputs:
-    zapApiUrl: 'http://localhost:9090'  # 'zapApiUrl' should be lowercase
-    zapApiKey: 'shivam1234'  # 'zapApiKey' should be lowercase
-    targetUrl: 'https://www.gmail.com/'  # 'targetUrl' should be lowercase
+    zapApiUrl: 'http://localhost:9090'  
+    zapApiKey: 'shivam1234'  
+    targetUrl: 'https://www.gmail.com/'  
