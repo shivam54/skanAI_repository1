@@ -26,3 +26,7 @@ steps:
     ExecuteSpiderScan: true
     MaxChildrenToCrawl: '2'
     ExecuteOpenApiScan: false
+    GenerateReport: true
+    ReportFormat: 'pdf' # Specify the format of the report (e.g., HTML, XML, PDF)
+    ReportFilename: 'zap_report' # Specify the filename of the report
+    ReportEmail: 'shivam.singla@skan.ai' # Specify the email address(es) where the report should be sent
